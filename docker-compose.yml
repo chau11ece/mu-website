@@ -1,35 +1,17 @@
-version: '3.8'
-
 services:
-  # Web Server (CMS)
   mu_php_web:
-    build: .
+    image: chaudevops/mu-website:latest # Point to the image the Action will build
     container_name: mu_php_web
     ports:
       - "8888:80"
-    volumes:
-      - ./src:/var/www/html
     environment:
       - TZ=Asia/Ho_Chi_Minh
-      - DB_HOST=mu_mssql
-      - DB_PASSWORD=MuOnline123!
-    depends_on:
-      - mu_mssql
+      - DB_HOST=mu_mssql             # This matches the DB service name
+      - DB_PASSWORD=MuOnline@DevOps2024! 
+    networks:
+      - mu-network
 
-  # SQL Server (Database)
-  mu_mssql:
-    image: mcr.microsoft.com/mssql/server:2022-latest
-    container_name: mu_mssql
-    # No platform tag needed for Intel, or use linux/amd64
-    user: root 
-    ports:
-      - "1433:1433"
-    environment:
-      - ACCEPT_EULA=Y
-      - MSSQL_SA_PASSWORD=MuOnline@DevOps2024!  # Stronger password required by full MSSQL
-    volumes:
-      - ./db-data:/var/opt/mssql/backup
-      - mssql_data:/var/opt/mssql/data
-
-volumes:
-  mssql_data:
+networks:
+  mu-network:
+    external: true
+    

@@ -43,3 +43,5 @@ RUN echo "<Directory /var/www/html>\n\
 # Restart apache to apply (Docker handles this on start, but good for clarity)
 WORKDIR /var/www/html
 RUN chown -R www-data:www-data /var/www/html
+RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
+
